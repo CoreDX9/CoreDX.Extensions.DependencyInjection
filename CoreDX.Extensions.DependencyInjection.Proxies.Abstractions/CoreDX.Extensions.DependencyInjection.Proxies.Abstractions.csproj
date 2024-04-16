@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageVersion>8.0.0</PackageVersion>
+    <PackageTags>Proxy;DependencyInjection</PackageTags>
+    <Description>Add service descriptor extensions for register dynamic proxy.</Description>
+    <Title>An extensions for CoreDX.Extensions.DependencyInjection.Abstractions to add dynamic proxy support for service provider that support typed implementation factory.</Title>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Castle.Core.AsyncInterceptor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoreDX.Extensions.DependencyInjection.Abstractions\CoreDX.Extensions.DependencyInjection.Abstractions.csproj" />
+  </ItemGroup>
+    
+</Project>
