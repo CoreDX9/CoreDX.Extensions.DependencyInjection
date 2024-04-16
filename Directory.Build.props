@@ -9,6 +9,8 @@
     <AssemblyVersion>$(PackageVersion)</AssemblyVersion>
     <FileVersion>$(PackageVersion)</FileVersion>
     <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/CoreDX9/CoreDX.Extensions.DependencyInjection</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/CoreDX9/CoreDX.Extensions.DependencyInjection</PackageProjectUrl>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
