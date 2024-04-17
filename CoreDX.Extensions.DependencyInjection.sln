@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.Dependenc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Proxies.Abstractions", "CoreDX.Extensions.DependencyInjection.Proxies.Abstractions\CoreDX.Extensions.DependencyInjection.Proxies.Abstractions.csproj", "{FA832FB5-4367-4739-A571-2287D1472323}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Hosting", "CoreDX.Extensions.DependencyInjection.Hosting\CoreDX.Extensions.DependencyInjection.Hosting.csproj", "{9EEECF86-3B70-456A-A436-01F3C75277F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Hosting.Abstractions", "CoreDX.Extensions.DependencyInjection.Hosting.Abstractions\CoreDX.Extensions.DependencyInjection.Hosting.Abstractions.csproj", "{9EEECF86-3B70-456A-A436-01F3C75277F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Hosting.Proxies", "CoreDX.Extensions.DependencyInjection.Hosting.Proxies\CoreDX.Extensions.DependencyInjection.Hosting.Proxies.csproj", "{814C4C21-A5A0-4B22-9EA7-CEA0A3E72B56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions", "CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions\CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions.csproj", "{814C4C21-A5A0-4B22-9EA7-CEA0A3E72B56}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{8CE6C42E-F908-4D07-8DB2-78599B5583DC}"
 	ProjectSection(SolutionItems) = preProject
