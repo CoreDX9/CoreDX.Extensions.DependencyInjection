@@ -15,4 +15,4 @@ The main types provided by this library are:
 ## Related Packages
 * `Microsoft.Extensions.Hosting.Abstractions`
 * `CoreDX.Extensions.DependencyInjection`
-* `CoreDX.Extensions.DependencyInjection.Proxies`
+* `CoreDX.Extensions.DependencyInjection.Proxies.Abstractions`
