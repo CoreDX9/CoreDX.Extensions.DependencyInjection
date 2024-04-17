@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Authors>CoreDX</Authors>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

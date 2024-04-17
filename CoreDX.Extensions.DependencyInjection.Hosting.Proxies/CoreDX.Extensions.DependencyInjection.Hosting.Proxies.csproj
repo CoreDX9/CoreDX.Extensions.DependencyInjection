@@ -3,10 +3,11 @@
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageVersion>8.0.0</PackageVersion>
+    <PackageVersion>8.0.0.1</PackageVersion>
     <PackageTags>Hosting;Proxy;DependencyInjection</PackageTags>
     <Description>Add generic host extensions for CoreDX.Extensions.DependencyInjection.Hosting.Proxies.ProxyTypedImplementationFactoryServiceProviderFactory.</Description>
     <Title>An extensions for Microsoft.Extensions.Hosting.Abstractions to add dynamic proxy support for service provider that support typed implementation factory.</Title>
+    <PackageReleaseNotes>Add document.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

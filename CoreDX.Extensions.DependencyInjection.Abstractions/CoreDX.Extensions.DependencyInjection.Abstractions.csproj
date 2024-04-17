@@ -3,10 +3,11 @@
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageVersion>8.0.1</PackageVersion>
+    <PackageVersion>8.0.1.1</PackageVersion>
     <PackageTags>DependencyInjection</PackageTags>
     <Description>Add service descriptor that service type is provided as argument in parameter of factory.</Description>
     <Title>An extensions for Microsoft.Extensions.DependencyInjection.Abstractions to add typed implementation factory service descriptor.</Title>
+    <PackageReleaseNotes>Add document.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
