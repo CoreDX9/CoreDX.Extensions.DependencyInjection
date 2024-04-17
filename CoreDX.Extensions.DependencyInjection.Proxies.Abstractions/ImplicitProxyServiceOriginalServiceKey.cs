@@ -40,11 +40,13 @@ public sealed class ImplicitProxyServiceOriginalServiceKey
     /// </summary>
     public object? OriginalServiceKey => _originalServiceKey;
 
+    /// <inheritdoc />
     public bool Equals(ImplicitProxyServiceOriginalServiceKey? other)
     {
         return Equals((object?)other);
     }
 
+    /// <inheritdoc />
     public override bool Equals(object? obj)
     {
         if (_isStringMode && obj is string str) return $"{DefaultStringPrefix}{_originalServiceKey}" == str;
@@ -57,36 +59,43 @@ public sealed class ImplicitProxyServiceOriginalServiceKey
         }
     }
 
+    /// <inheritdoc />
     public static bool operator ==(ImplicitProxyServiceOriginalServiceKey? left, ImplicitProxyServiceOriginalServiceKey? right)
     {
         return left?.Equals(right) is true;
     }
 
+    /// <inheritdoc />
     public static bool operator !=(ImplicitProxyServiceOriginalServiceKey? left, ImplicitProxyServiceOriginalServiceKey? right)
     {
         return !(left == right);
     }
 
+    /// <inheritdoc />
     public static bool operator ==(ImplicitProxyServiceOriginalServiceKey? left, object? right)
     {
         return left?.Equals(right) is true;
     }
 
+    /// <inheritdoc />
     public static bool operator !=(ImplicitProxyServiceOriginalServiceKey? left, object? right)
     {
         return !(left == right);
     }
 
+    /// <inheritdoc />
     public static bool operator ==(object? left, ImplicitProxyServiceOriginalServiceKey? right)
     {
         return right == left;
     }
 
+    /// <inheritdoc />
     public static bool operator !=(object? left, ImplicitProxyServiceOriginalServiceKey? right)
     {
         return right != left;
     }
 
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         return _isStringMode

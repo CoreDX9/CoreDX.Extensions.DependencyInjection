@@ -10,6 +10,9 @@ public class TypedImplementationFactoryServiceDescriptor : ServiceDescriptor
 {
     private object? _typedImplementationFactory;
 
+    /// <summary>
+    /// Gets the typed factory used for creating service instances.
+    /// </summary>
     public Func<IServiceProvider, Type, object>? TypedImplementationFactory
     {
         get
@@ -24,6 +27,9 @@ public class TypedImplementationFactoryServiceDescriptor : ServiceDescriptor
 
     private object? _typedKeyedImplementationFactory;
 
+    /// <summary>
+    /// Gets the typed keyed factory used for creating service instances.
+    /// </summary>
     public Func<IServiceProvider, object?, Type, object>? TypedKeyedImplementationFactory
     {
         get
@@ -155,31 +161,30 @@ public class TypedImplementationFactoryServiceDescriptor : ServiceDescriptor
 
     /// <summary>
     /// Creates an instance of <see cref="TypedImplementationFactoryServiceDescriptor"/>
-    /// with the specified service in <paramref name="implementationType"/> and the <see cref="ServiceLifetime.Singleton"/> lifetime.
+    /// with the specified service in <paramref name="implementationFactory"/> and the <see cref="ServiceLifetime.Singleton"/> lifetime.
     /// </summary>
     /// <param name="serviceType">The <see cref="Type"/> of the service.</param>
-    /// <param name="factory">A factory used for creating service instances. Requested service type is provided as argument in parameter of factory.</param>
+    /// <param name="implementationFactory">A factory used for creating service instances. Requested service type is provided as argument in parameter of factory.</param>
     /// <returns>A new instance of <see cref="TypedImplementationFactoryServiceDescriptor"/>.</returns>
     public static TypedImplementationFactoryServiceDescriptor Singleton(
         Type serviceType,
-        Func<IServiceProvider, Type, object> implementationType)
+        Func<IServiceProvider, Type, object> implementationFactory)
     {
-        return new(serviceType, implementationType, ServiceLifetime.Singleton);
+        return new(serviceType, implementationFactory, ServiceLifetime.Singleton);
     }
 
     /// <summary>
     /// Creates an instance of <see cref="TypedImplementationFactoryServiceDescriptor"/>
-    /// with the specified service in <paramref name="implementationType"/> and the <see cref="ServiceLifetime.Singleton"/> lifetime.
+    /// with the specified service in <paramref name="implementationFactory"/> and the <see cref="ServiceLifetime.Singleton"/> lifetime.
     /// </summary>
     /// <typeparam name="TService">The type of the service.</typeparam>
-    /// <typ name="serviceType">The <see cref="Type"/> of the service.</param>
-    /// <param name="implementationType">A factory used for creating service instances. Requested service type is provided as argument in parameter of factory.</param>
+    /// <param name="implementationFactory">A factory used for creating service instances. Requested service type is provided as argument in parameter of factory.</param>
     /// <returns>A new instance of <see cref="TypedImplementationFactoryServiceDescriptor"/>.</returns>
     public static TypedImplementationFactoryServiceDescriptor Singleton<TService>(
-        Func<IServiceProvider, Type, object> implementationType)
+        Func<IServiceProvider, Type, object> implementationFactory)
         where TService : class
     {
-        return new(typeof(TService), implementationType, ServiceLifetime.Singleton);
+        return new(typeof(TService), implementationFactory, ServiceLifetime.Singleton);
     }
 
     /// <summary>
@@ -230,17 +235,16 @@ public class TypedImplementationFactoryServiceDescriptor : ServiceDescriptor
 
     /// <summary>
     /// Creates an instance of <see cref="TypedImplementationFactoryServiceDescriptor"/>
-    /// with the specified service in <paramref name="implementationType"/> and the <see cref="ServiceLifetime.Scoped"/> lifetime.
+    /// with the specified service in <paramref name="implementationFactory"/> and the <see cref="ServiceLifetime.Scoped"/> lifetime.
     /// </summary>
     /// <typeparam name="TService">The type of the service.</typeparam>
-    /// <typ name="serviceType">The <see cref="Type"/> of the service.</param>
-    /// <param name="implementationType">A factory used for creating service instances. Requested service type is provided as argument in parameter of factory.</param>
+    /// <param name="implementationFactory">A factory used for creating service instances. Requested service type is provided as argument in parameter of factory.</param>
     /// <returns>A new instance of <see cref="TypedImplementationFactoryServiceDescriptor"/>.</returns>
     public static TypedImplementationFactoryServiceDescriptor Scoped<TService>(
-        Func<IServiceProvider, Type, object> implementationType)
+        Func<IServiceProvider, Type, object> implementationFactory)
         where TService : class
     {
-        return new(typeof(TService), implementationType, ServiceLifetime.Scoped);
+        return new(typeof(TService), implementationFactory, ServiceLifetime.Scoped);
     }
 
     /// <summary>
@@ -291,17 +295,16 @@ public class TypedImplementationFactoryServiceDescriptor : ServiceDescriptor
 
     /// <summary>
     /// Creates an instance of <see cref="TypedImplementationFactoryServiceDescriptor"/>
-    /// with the specified service in <paramref name="implementationType"/> and the <see cref="ServiceLifetime.Transient"/> lifetime.
+    /// with the specified service in <paramref name="implementationFactory"/> and the <see cref="ServiceLifetime.Transient"/> lifetime.
     /// </summary>
     /// <typeparam name="TService">The type of the service.</typeparam>
-    /// <typ name="serviceType">The <see cref="Type"/> of the service.</param>
-    /// <param name="implementationType">A factory used for creating service instances. Requested service type is provided as argument in parameter of factory.</param>
+    /// <param name="implementationFactory">A factory used for creating service instances. Requested service type is provided as argument in parameter of factory.</param>
     /// <returns>A new instance of <see cref="TypedImplementationFactoryServiceDescriptor"/>.</returns>
     public static TypedImplementationFactoryServiceDescriptor Transient<TService>(
-        Func<IServiceProvider, Type, object> implementationType)
+        Func<IServiceProvider, Type, object> implementationFactory)
         where TService : class
     {
-        return new(typeof(TService), implementationType, ServiceLifetime.Transient);
+        return new(typeof(TService), implementationFactory, ServiceLifetime.Transient);
     }
 
     /// <summary>

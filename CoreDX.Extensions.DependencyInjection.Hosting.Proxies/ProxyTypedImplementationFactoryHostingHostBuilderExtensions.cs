@@ -4,6 +4,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
+/// <summary>
+/// Extension methods for <see cref="IServiceCollection"/> to configure service provider factory of <see cref="IHostBuilder"/>.
+/// </summary>
 public static class ProxyTypedImplementationFactoryHostingHostBuilderExtensions
 {
     /// <summary>

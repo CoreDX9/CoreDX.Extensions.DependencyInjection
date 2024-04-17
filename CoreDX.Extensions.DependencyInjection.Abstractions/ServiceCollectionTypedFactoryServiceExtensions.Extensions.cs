@@ -1,8 +1,10 @@
 ﻿using CoreDX.Extensions.DependencyInjection.Abstractions;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Microsoft.Extensions.DependencyInjection.Extensions;
 
+/// <summary>
+/// Extension methods for <see cref="IServiceCollection"/> to try add service using typed service implementation factory.
+/// </summary>
 public static partial class ServiceCollectionTypedFactoryServiceExtensions
 {
     /// <summary>
@@ -74,6 +76,7 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
     /// <param name="serviceType">The type of the service to register.</param>
+    /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
     /// <param name="implementationFactory">The factory that creates the service.</param>
     /// <param name="serviceLifetime">The <see cref="ServiceLifetime"/> of <paramref name="serviceType"/>.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
@@ -98,6 +101,7 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
     /// </summary>
     /// <typeparam name="TService">The type of the service to add.</typeparam>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+    /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
     /// <param name="implementationFactory">The factory that creates the service.</param>
     /// <param name="serviceLifetime">The <see cref="ServiceLifetime"/> of <typeparamref name="TService"/>.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
@@ -119,6 +123,7 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
     /// <typeparam name="TService">The type of the service to add.</typeparam>
     /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+    /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
     /// <param name="implementationFactory">The factory that creates the service.</param>
     /// <param name="serviceLifetime">The <see cref="ServiceLifetime"/> of <typeparamref name="TService"/>.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
@@ -193,6 +198,7 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
     /// <param name="serviceType">The type of the service to register.</param>
+    /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
     /// <param name="implementationFactory">The factory that creates the service.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static void TryAddKeyedSingletonTypedFactory(
@@ -211,6 +217,7 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
     /// </summary>
     /// <typeparam name="TService">The type of the service to add.</typeparam>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+    /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
     /// <param name="implementationFactory">The factory that creates the service.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static void TryAddKeyedSingletonTypedFactory<TService>(
@@ -230,6 +237,7 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
     /// <typeparam name="TService">The type of the service to add.</typeparam>
     /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+    /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
     /// <param name="implementationFactory">The factory that creates the service.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static void TryAddKeyedSingletonTypedFactory<TService, TImplementation>(
@@ -302,6 +310,7 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
     /// <param name="serviceType">The type of the service to register.</param>
+    /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
     /// <param name="implementationFactory">The factory that creates the service.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static void TryAddKeyedScopedTypedFactory(
@@ -320,6 +329,7 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
     /// </summary>
     /// <typeparam name="TService">The type of the service to add.</typeparam>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+    /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
     /// <param name="implementationFactory">The factory that creates the service.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static void TryAddKeyedScopedTypedFactory<TService>(
@@ -339,6 +349,7 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
     /// <typeparam name="TService">The type of the service to add.</typeparam>
     /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+    /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
     /// <param name="implementationFactory">The factory that creates the service.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static void TryAddKeyedScopedTypedFactory<TService, TImplementation>(
@@ -411,6 +422,7 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
     /// <param name="serviceType">The type of the service to register.</param>
+    /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
     /// <param name="implementationFactory">The factory that creates the service.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static void TryAddKeyedTransientTypedFactory(
@@ -429,6 +441,7 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
     /// </summary>
     /// <typeparam name="TService">The type of the service to add.</typeparam>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+    /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
     /// <param name="implementationFactory">The factory that creates the service.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static void TryAddKeyedTransientTypedFactory<TService>(
@@ -448,6 +461,7 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
     /// <typeparam name="TService">The type of the service to add.</typeparam>
     /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+    /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
     /// <param name="implementationFactory">The factory that creates the service.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static void TryAddKeyedTransientTypedFactory<TService, TImplementation>(

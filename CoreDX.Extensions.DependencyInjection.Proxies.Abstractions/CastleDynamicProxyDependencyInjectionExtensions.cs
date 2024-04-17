@@ -6,6 +6,9 @@ using System.Diagnostics;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
+/// <summary>
+/// Extension methods for <see cref="IServiceCollection"/> to add service proxy.
+/// </summary>
 public static class CastleDynamicProxyDependencyInjectionExtensions
 {
     /// <summary>

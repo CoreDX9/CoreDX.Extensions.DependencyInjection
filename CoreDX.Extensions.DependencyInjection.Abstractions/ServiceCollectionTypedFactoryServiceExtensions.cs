@@ -2,6 +2,9 @@
 
 namespace Microsoft.Extensions.DependencyInjection;
 
+/// <summary>
+/// Extension methods for <see cref="IServiceCollection"/> to add service using typed service implementation factory.
+/// </summary>
 public static partial class ServiceCollectionTypedFactoryServiceExtensions
 {
     /// <summary>

@@ -3,6 +3,9 @@ using CoreDX.Extensions.DependencyInjection.Abstractions;
 
 namespace Microsoft.Extensions.DependencyInjection.Extensions;
 
+/// <summary>
+/// Extension methods for <see cref="IServiceCollection"/> to try add service forward.
+/// </summary>
 public static partial class ServiceCollectionForwardServiceExtensions
 {
     /// <summary>

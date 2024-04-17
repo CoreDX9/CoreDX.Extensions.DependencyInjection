@@ -3,6 +3,9 @@ using CoreDX.Extensions.DependencyInjection.Abstractions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
+/// <summary>
+/// Extension methods for <see cref="IServiceCollection"/> to add service forward.
+/// </summary>
 public static partial class ServiceCollectionForwardServiceExtensions
 {
     /// <summary>
@@ -43,7 +46,7 @@ public static partial class ServiceCollectionForwardServiceExtensions
     /// <typeparam name="TService">The type of the service to add.</typeparam>
     /// <typeparam name="TForwardTargetService">The type of the forward to use.</typeparam>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
-    /// <param name="serviceLifetime">The <see cref="ServiceLifetime"/> of <paramref name="serviceType"/>.</param>
+    /// <param name="serviceLifetime">The <see cref="ServiceLifetime"/> of <typeparamref name="TService"/>.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static IServiceCollection AddForward<TService, TForwardTargetService>(
         this IServiceCollection services,
@@ -95,7 +98,7 @@ public static partial class ServiceCollectionForwardServiceExtensions
     /// <typeparam name="TForwardTargetService">The type of the forward to use.</typeparam>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
     /// <param name="serviceKey">The <see cref="ServiceDescriptor.ServiceKey"/> of the service.</param>
-    /// <param name="serviceLifetime">The <see cref="ServiceLifetime"/> of <paramref name="serviceType"/>.</param>
+    /// <param name="serviceLifetime">The <see cref="ServiceLifetime"/> of <typeparamref name="TService"/>.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static IServiceCollection AddKeyedForward<TService, TForwardTargetService>(
         this IServiceCollection services,
