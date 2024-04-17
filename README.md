@@ -8,9 +8,9 @@ Some extensions for this dependency injection and generic host.
 
 # Simple Doc
 [CoreDX.Extensions.DependencyInjection](./CoreDX.Extensions.DependencyInjection/readme.md)
-[CoreDX.Extensions.DependencyInjection.Hosting](./CoreDX.Extensions.DependencyInjection.Hosting/readme.md)
+[CoreDX.Extensions.DependencyInjection.Hosting.Abstractions](./CoreDX.Extensions.DependencyInjection.Hosting.Abstractions/readme.md)
 [CoreDX.Extensions.DependencyInjection.Proxies.Abstractions](./CoreDX.Extensions.DependencyInjection.Proxies.Abstractions/readme.md)
-[CoreDX.Extensions.DependencyInjection.Hosting.Proxies](./CoreDX.Extensions.DependencyInjection.Hosting.Proxies/readme.md)
+[CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions](./CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions/readme.md)
 
 # See Also
 [Dependency Injection of Open Generics via factory](https://github.com/dotnet/runtime/issues/41050 "Dependency Injection of Open Generics via factory")
