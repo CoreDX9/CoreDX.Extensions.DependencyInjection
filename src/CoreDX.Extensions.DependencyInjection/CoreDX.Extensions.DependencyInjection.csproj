@@ -7,7 +7,7 @@
     <PackageTags>DependencyInjection</PackageTags>
     <Description>Add service provider that supported service type is provided as argument in parameter of factory.</Description>
     <Title>An implementation modified from Microsoft.Extensions.DependencyInjection to support typed implementation factory.</Title>
-    <PackageReleaseNotes>Add document.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add netstandard2.0;netstandard2.1;net462 support.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">

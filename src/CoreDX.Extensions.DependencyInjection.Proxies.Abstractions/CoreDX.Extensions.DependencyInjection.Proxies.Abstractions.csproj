@@ -7,7 +7,7 @@
     <PackageTags>Proxy;DependencyInjection</PackageTags>
     <Description>Add service descriptor extensions for register dynamic proxy.</Description>
     <Title>An extensions for CoreDX.Extensions.DependencyInjection.Abstractions to add dynamic proxy support for service provider that support typed implementation factory.</Title>
-    <PackageReleaseNotes>Add document.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add netstandard2.0;netstandard2.1;net462 support.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

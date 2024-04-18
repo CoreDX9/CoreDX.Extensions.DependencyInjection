@@ -7,7 +7,7 @@
     <PackageTags>DependencyInjection</PackageTags>
     <Description>Add service descriptor that service type is provided as argument in parameter of factory.</Description>
     <Title>An extensions for Microsoft.Extensions.DependencyInjection.Abstractions to add typed implementation factory service descriptor.</Title>
-    <PackageReleaseNotes>Add document.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add netstandard2.0;netstandard2.1;net462 support.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'net462' ">
