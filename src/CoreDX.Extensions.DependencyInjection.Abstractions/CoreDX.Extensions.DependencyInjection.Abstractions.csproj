@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageVersion>8.0.1.2</PackageVersion>
+    <PackageTags>DependencyInjection</PackageTags>
+    <Description>Add service descriptor that service type is provided as argument in parameter of factory.</Description>
+    <Title>An extensions for Microsoft.Extensions.DependencyInjection.Abstractions to add typed implementation factory service descriptor.</Title>
+    <PackageReleaseNotes>Add document.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'net462' ">
+    <Compile Include="..\Common\DynamicallyAccessedMembersAttribute.cs" Link="Common\DynamicallyAccessedMembersAttribute.cs" />
+    <Compile Include="..\Common\DynamicallyAccessedMemberTypes.cs" Link="Common\DynamicallyAccessedMemberTypes.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+    
+</Project>

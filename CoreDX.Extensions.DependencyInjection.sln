@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection", "CoreDX.Extensions.DependencyInjection\CoreDX.Extensions.DependencyInjection.csproj", "{A5C0C3F9-08F0-4C5B-B382-72B5006F1A5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection", "src\CoreDX.Extensions.DependencyInjection\CoreDX.Extensions.DependencyInjection.csproj", "{A5C0C3F9-08F0-4C5B-B382-72B5006F1A5A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Abstractions", "CoreDX.Extensions.DependencyInjection.Abstractions\CoreDX.Extensions.DependencyInjection.Abstractions.csproj", "{A1AA05B0-7234-43CE-9A60-C014C8018C61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Abstractions", "src\CoreDX.Extensions.DependencyInjection.Abstractions\CoreDX.Extensions.DependencyInjection.Abstractions.csproj", "{A1AA05B0-7234-43CE-9A60-C014C8018C61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Proxies.Abstractions", "CoreDX.Extensions.DependencyInjection.Proxies.Abstractions\CoreDX.Extensions.DependencyInjection.Proxies.Abstractions.csproj", "{FA832FB5-4367-4739-A571-2287D1472323}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Proxies.Abstractions", "src\CoreDX.Extensions.DependencyInjection.Proxies.Abstractions\CoreDX.Extensions.DependencyInjection.Proxies.Abstractions.csproj", "{FA832FB5-4367-4739-A571-2287D1472323}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Hosting.Abstractions", "CoreDX.Extensions.DependencyInjection.Hosting.Abstractions\CoreDX.Extensions.DependencyInjection.Hosting.Abstractions.csproj", "{9EEECF86-3B70-456A-A436-01F3C75277F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Hosting.Abstractions", "src\CoreDX.Extensions.DependencyInjection.Hosting.Abstractions\CoreDX.Extensions.DependencyInjection.Hosting.Abstractions.csproj", "{9EEECF86-3B70-456A-A436-01F3C75277F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions", "CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions\CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions.csproj", "{814C4C21-A5A0-4B22-9EA7-CEA0A3E72B56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions", "src\CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions\CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions.csproj", "{814C4C21-A5A0-4B22-9EA7-CEA0A3E72B56}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{8CE6C42E-F908-4D07-8DB2-78599B5583DC}"
 	ProjectSection(SolutionItems) = preProject
@@ -22,6 +22,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6DEC13CE-301E-4ECE-B157-EDA6670B406B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{DB72E01B-53F5-4CFF-B306-5C97E840AC68}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Extensions.DependencyInjection.Tests", "tests\DI.Tests\Microsoft.Extensions.DependencyInjection.Tests.csproj", "{6E0585AC-629D-4CAC-AA35-4C41C0C8A62B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectibleAssembly", "tests\CollectibleAssembly\CollectibleAssembly.csproj", "{D5712D67-CBEA-4753-B63B-714BEE3038A6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Extensions.DependencyInjection.Specification.Tests", "tests\Specification.Tests\src\Microsoft.Extensions.DependencyInjection.Specification.Tests.csproj", "{2FAAEBCB-9F19-4398-9971-A81EF9E537E0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestUtilities", "tests\TestUtilities\TestUtilities.csproj", "{3608E599-1CD3-4697-B97B-E9ECDC2C3979}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,9 +61,36 @@ Global
 		{814C4C21-A5A0-4B22-9EA7-CEA0A3E72B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{814C4C21-A5A0-4B22-9EA7-CEA0A3E72B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{814C4C21-A5A0-4B22-9EA7-CEA0A3E72B56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E0585AC-629D-4CAC-AA35-4C41C0C8A62B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E0585AC-629D-4CAC-AA35-4C41C0C8A62B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E0585AC-629D-4CAC-AA35-4C41C0C8A62B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E0585AC-629D-4CAC-AA35-4C41C0C8A62B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5712D67-CBEA-4753-B63B-714BEE3038A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5712D67-CBEA-4753-B63B-714BEE3038A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5712D67-CBEA-4753-B63B-714BEE3038A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5712D67-CBEA-4753-B63B-714BEE3038A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FAAEBCB-9F19-4398-9971-A81EF9E537E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FAAEBCB-9F19-4398-9971-A81EF9E537E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FAAEBCB-9F19-4398-9971-A81EF9E537E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FAAEBCB-9F19-4398-9971-A81EF9E537E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3608E599-1CD3-4697-B97B-E9ECDC2C3979}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3608E599-1CD3-4697-B97B-E9ECDC2C3979}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3608E599-1CD3-4697-B97B-E9ECDC2C3979}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3608E599-1CD3-4697-B97B-E9ECDC2C3979}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A5C0C3F9-08F0-4C5B-B382-72B5006F1A5A} = {6DEC13CE-301E-4ECE-B157-EDA6670B406B}
+		{A1AA05B0-7234-43CE-9A60-C014C8018C61} = {6DEC13CE-301E-4ECE-B157-EDA6670B406B}
+		{FA832FB5-4367-4739-A571-2287D1472323} = {6DEC13CE-301E-4ECE-B157-EDA6670B406B}
+		{9EEECF86-3B70-456A-A436-01F3C75277F0} = {6DEC13CE-301E-4ECE-B157-EDA6670B406B}
+		{814C4C21-A5A0-4B22-9EA7-CEA0A3E72B56} = {6DEC13CE-301E-4ECE-B157-EDA6670B406B}
+		{6E0585AC-629D-4CAC-AA35-4C41C0C8A62B} = {DB72E01B-53F5-4CFF-B306-5C97E840AC68}
+		{D5712D67-CBEA-4753-B63B-714BEE3038A6} = {DB72E01B-53F5-4CFF-B306-5C97E840AC68}
+		{2FAAEBCB-9F19-4398-9971-A81EF9E537E0} = {DB72E01B-53F5-4CFF-B306-5C97E840AC68}
+		{3608E599-1CD3-4697-B97B-E9ECDC2C3979} = {DB72E01B-53F5-4CFF-B306-5C97E840AC68}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C6356ED4-C455-456C-82EC-93E51E2DBD4B}

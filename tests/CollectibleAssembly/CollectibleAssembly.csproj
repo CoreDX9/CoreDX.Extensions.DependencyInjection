@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!--<TargetFramework>net8.0</TargetFramework>-->
+    <TargetFrameworks>net8.0;net462</TargetFrameworks>
+    <EnableDefaultItems>true</EnableDefaultItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--<ProjectReference Include="$(LibrariesProjectRoot)Microsoft.Extensions.DependencyInjection.Abstractions\src\Microsoft.Extensions.DependencyInjection.Abstractions.csproj" SkipUseReferenceAssembly="true" />-->
+    <ProjectReference Include="..\..\src\CoreDX.Extensions.DependencyInjection.Abstractions\CoreDX.Extensions.DependencyInjection.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\CoreDX.Extensions.DependencyInjection\CoreDX.Extensions.DependencyInjection.csproj" />
+    <!--<ProjectReference Include="..\..\src\Microsoft.Extensions.DependencyInjection.csproj" SkipUseReferenceAssembly="true" />-->
+  </ItemGroup>
+</Project>

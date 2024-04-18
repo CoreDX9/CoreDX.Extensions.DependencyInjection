@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--<TargetFramework>net8.0</TargetFramework>-->
+    <TargetFrameworks>net8.0;net462</TargetFrameworks>
+    <IsTestProject>true</IsTestProject>
+    <EnableDefaultItems>true</EnableDefaultItems>
+    <IncludeRemoteExecutor>true</IncludeRemoteExecutor>
+    <!-- CS0436: DynamicallyAccessedMemberTypes conflicts with imported type -->
+    <NoWarn Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">$(NoWarn);CS0436</NoWarn>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\DI.Specification.Tests\**\*.cs" />
+    <!--<Compile Include="$(CommonPath)..\tests\Extensions\SingleThreadedSynchronizationContext.cs" Link="Shared\SingleThreadedSynchronizationContext.cs" />-->
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETCoreApp'">
+    <Compile Include="..\..\src\Common\UnconditionalSuppressMessageAttribute.cs" />
+    <Compile Include="..\..\src\Common\DynamicallyAccessedMembersAttribute.cs" />
+    <Compile Include="..\..\src\Common\DynamicallyAccessedMemberTypes.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ActivatorUtilitiesTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--<ProjectReference Include="$(LibrariesProjectRoot)Microsoft.Extensions.DependencyInjection.Abstractions\src\Microsoft.Extensions.DependencyInjection.Abstractions.csproj" SkipUseReferenceAssembly="true" />
+    <ProjectReference Include="$(LibrariesProjectRoot)Microsoft.Extensions.DependencyInjection.Specification.Tests\src\Microsoft.Extensions.DependencyInjection.Specification.Tests.csproj" />-->
+    <ProjectReference Include="..\..\src\CoreDX.Extensions.DependencyInjection.Abstractions\CoreDX.Extensions.DependencyInjection.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\CoreDX.Extensions.DependencyInjection\CoreDX.Extensions.DependencyInjection.csproj" />
+    <!--<ProjectReference Include="..\..\src\Microsoft.Extensions.DependencyInjection.csproj" SkipUseReferenceAssembly="true" />-->
+    <ProjectReference Include="..\CollectibleAssembly\CollectibleAssembly.csproj" />
+    <ProjectReference Include="..\Specification.Tests\src\Microsoft.Extensions.DependencyInjection.Specification.Tests.csproj" />  
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <PackageReference Include="System.ValueTuple" />
+    <PackageReference Include="System.Memory" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageVersion>8.0.0.2</PackageVersion>
+    <PackageTags>DependencyInjection</PackageTags>
+    <Description>Add service provider that supported service type is provided as argument in parameter of factory.</Description>
+    <Title>An implementation modified from Microsoft.Extensions.DependencyInjection to support typed implementation factory.</Title>
+    <PackageReleaseNotes>Add document.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
+    <DefineConstants>$(DefineConstants);IL_EMIT</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <Compile Remove="ServiceLookup\ILEmit\**" />
+    <EmbeddedResource Remove="ServiceLookup\ILEmit\**" />
+    <None Remove="ServiceLookup\ILEmit\**" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'net462' ">
+    <Compile Include="..\Common\DynamicallyAccessedMembersAttribute.cs" Link="Common\DynamicallyAccessedMembersAttribute.cs" />
+    <Compile Include="..\Common\DynamicallyAccessedMemberTypes.cs" Link="Common\DynamicallyAccessedMemberTypes.cs" />
+    <Compile Include="..\Common\UnconditionalSuppressMessageAttribute.cs" Link="Common\UnconditionalSuppressMessageAttribute.cs" />
+    <Compile Include="..\Common\NullableAttribute.cs" Link="Common\NullableAttribute.cs" />
+    <Compile Include="..\Common\RequiresDynamicCodeAttribute.cs" Link="Common\RequiresDynamicCodeAttribute.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+    <Compile Include="..\Common\RequiresDynamicCodeAttribute.cs" Link="Common\RequiresDynamicCodeAttribute.cs" />
+  </ItemGroup>
+    
+  <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' And '$(TargetFramework)' != 'netstandard2.1' And '$(TargetFramework)' != 'net462' ">
+    <Compile Remove="Common\ParameterDefaultValue.netstandard.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'net462' ">
+    <Compile Remove="Common\ParameterDefaultValue.netcoreapp.cs" />
+  </ItemGroup>
+
+    <ItemGroup>
+    <ProjectReference Include="..\CoreDX.Extensions.DependencyInjection.Abstractions\CoreDX.Extensions.DependencyInjection.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
