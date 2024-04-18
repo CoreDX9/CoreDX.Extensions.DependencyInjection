@@ -5,7 +5,7 @@ Some extensions for this dependency injection and generic host.
 
 # Source Info
 
-[copied_from_commit](./CoreDX.Extensions.DependencyInjection/copied_from_commit.txt)
+[copied_from_commit](./src/CoreDX.Extensions.DependencyInjection/copied_from_commit.txt)
 
 # Simple Doc
 
