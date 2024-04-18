@@ -9,11 +9,11 @@ Some extensions for this dependency injection and generic host.
 
 # Simple Doc
 
-* [CoreDX.Extensions.DependencyInjection](./CoreDX.Extensions.DependencyInjection/readme.md)
-* [CoreDX.Extensions.DependencyInjection.Abstractions](./CoreDX.Extensions.DependencyInjection.Abstractions/readme.md)
-* [CoreDX.Extensions.DependencyInjection.Hosting.Abstractions](./CoreDX.Extensions.DependencyInjection.Hosting.Abstractions/readme.md)
-* [CoreDX.Extensions.DependencyInjection.Proxies.Abstractions](./CoreDX.Extensions.DependencyInjection.Proxies.Abstractions/readme.md)
-* [CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions](./CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions/readme.md)
+* [CoreDX.Extensions.DependencyInjection](./src/CoreDX.Extensions.DependencyInjection/readme.md)
+* [CoreDX.Extensions.DependencyInjection.Abstractions](./src/CoreDX.Extensions.DependencyInjection.Abstractions/readme.md)
+* [CoreDX.Extensions.DependencyInjection.Hosting.Abstractions](./src/CoreDX.Extensions.DependencyInjection.Hosting.Abstractions/readme.md)
+* [CoreDX.Extensions.DependencyInjection.Proxies.Abstractions](./src/CoreDX.Extensions.DependencyInjection.Proxies.Abstractions/readme.md)
+* [CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions](./src/CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions/readme.md)
 
 # See Also
 
