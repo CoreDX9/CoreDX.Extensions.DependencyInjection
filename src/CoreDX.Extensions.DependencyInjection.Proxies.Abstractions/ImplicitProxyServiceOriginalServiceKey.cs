@@ -53,7 +53,8 @@ public sealed class ImplicitProxyServiceOriginalServiceKey
         else
         {
             var isEquals = obj is not null and ImplicitProxyServiceOriginalServiceKey other
-            && ((_originalServiceKey is null && other._originalServiceKey is null) || _originalServiceKey?.Equals(other._originalServiceKey) is true);
+                && ((_originalServiceKey is null && other._originalServiceKey is null)
+                    || (_originalServiceKey?.Equals(other._originalServiceKey) ?? other._originalServiceKey!.Equals(_originalServiceKey)) is true);
 
             return isEquals;
         }
@@ -62,7 +63,9 @@ public sealed class ImplicitProxyServiceOriginalServiceKey
     /// <inheritdoc />
     public static bool operator ==(ImplicitProxyServiceOriginalServiceKey? left, ImplicitProxyServiceOriginalServiceKey? right)
     {
-        return left?.Equals(right) is true;
+        if (left is not null) return left.Equals(right);
+        else if (right is not null) return right.Equals(left);
+        else return object.Equals(left, right);
     }
 
     /// <inheritdoc />
@@ -74,7 +77,9 @@ public sealed class ImplicitProxyServiceOriginalServiceKey
     /// <inheritdoc />
     public static bool operator ==(ImplicitProxyServiceOriginalServiceKey? left, object? right)
     {
-        return left?.Equals(right) is true;
+        if (left is null && right is null) return object.Equals(left, right);
+        else if (left is not null) return left.Equals(right);
+        else return right!.Equals(left);
     }
 
     /// <inheritdoc />
