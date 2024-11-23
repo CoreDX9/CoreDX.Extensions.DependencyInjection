@@ -2,13 +2,15 @@
 
   <PropertyGroup>
     <!--<TargetFramework>net8.0</TargetFramework>-->
-    <TargetFrameworks>net8.0;net462</TargetFrameworks>
+    <TargetFrameworks>net9.0;net462</TargetFrameworks>
     <IsTestProject>true</IsTestProject>
     <EnableDefaultItems>true</EnableDefaultItems>
     <IncludeRemoteExecutor>true</IncludeRemoteExecutor>
     <!-- CS0436: DynamicallyAccessedMemberTypes conflicts with imported type -->
     <NoWarn Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework'">$(NoWarn);CS0436</NoWarn>
+    <NoWarn>CS8632;xUnit1013;xUnit1026;xUnit2013;xUnit2015;xUnit2017</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

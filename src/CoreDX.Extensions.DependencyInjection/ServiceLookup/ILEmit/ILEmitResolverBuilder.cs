@@ -12,7 +12,6 @@ using System.Runtime.InteropServices;
 
 namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
 {
-
     [RequiresDynamicCode("Creates DynamicMethods")]
     internal sealed class ILEmitResolverBuilder : CallSiteVisitor<ILEmitResolverBuilderContext, object?>
     {

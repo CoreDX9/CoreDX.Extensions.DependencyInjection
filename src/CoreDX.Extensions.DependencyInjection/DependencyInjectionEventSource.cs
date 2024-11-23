@@ -265,7 +265,7 @@ namespace CoreDX.Extensions.DependencyInjection
                 object? instance = descriptor.GetImplementationInstance();
                 Debug.Assert(instance != null, "descriptor.ImplementationInstance != null");
                 builder.Append("\"implementationInstance\": \"");
-                builder.Append(instance.GetType());
+                builder.Append(instance!.GetType());
                 builder.Append(" (instance)");
             }
             else

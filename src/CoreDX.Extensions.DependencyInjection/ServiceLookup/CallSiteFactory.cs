@@ -94,7 +94,7 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
                 {
                     Debug.Assert(implementationType != null);
 
-                    if (implementationType.IsGenericTypeDefinition ||
+                    if (implementationType!.IsGenericTypeDefinition ||
                         implementationType.IsAbstract ||
                         implementationType.IsInterface)
                     {
@@ -323,7 +323,7 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
                         ServiceCallSite? callSite = TryCreateExact(descriptor, cacheKey, callSiteChain, slot);
                         Debug.Assert(callSite != null);
 
-                        cacheLocation = GetCommonCacheLocation(cacheLocation, callSite.Cache.Location);
+                        cacheLocation = GetCommonCacheLocation(cacheLocation, callSite!.Cache.Location);
                         callSites[i] = callSite;
                     }
                 }
@@ -490,7 +490,7 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
 
                     #endregion
 
-                    closedType = implementationType.MakeGenericType(genericTypeArguments);
+                    closedType = implementationType!.MakeGenericType(genericTypeArguments);
                 }
                 catch (ArgumentException)
                 {
@@ -605,7 +605,7 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
                 else
                 {
                     Debug.Assert(parameterCallSites != null);
-                    return new ConstructorCallSite(lifetime, serviceIdentifier.ServiceType, bestConstructor, parameterCallSites);
+                    return new ConstructorCallSite(lifetime, serviceIdentifier.ServiceType, bestConstructor, parameterCallSites!);
                 }
             }
             finally
@@ -627,6 +627,7 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
             for (int index = 0; index < parameters.Length; index++)
             {
                 ServiceCallSite? callSite = null;
+                bool isKeyedParameter = false;
                 Type parameterType = parameters[index].ParameterType;
                 foreach (var attribute in parameters[index].GetCustomAttributes(true))
                 {
@@ -644,11 +645,15 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
                     {
                         var parameterSvcId = new ServiceIdentifier(keyed.Key, parameterType);
                         callSite = GetCallSite(parameterSvcId, callSiteChain);
+                        isKeyedParameter = true;
                         break;
                     }
                 }
 
-                callSite ??= GetCallSite(ServiceIdentifier.FromServiceType(parameterType), callSiteChain);
+                if (!isKeyedParameter)
+                {
+                    callSite ??= GetCallSite(ServiceIdentifier.FromServiceType(parameterType), callSiteChain);
+                }
 
                 if (callSite == null && ParameterDefaultValue.TryGetDefaultValue(parameters[index], out object? defaultValue))
                 {
@@ -777,7 +782,7 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
                     }
 
                     Debug.Assert(_item != null);
-                    return _item;
+                    return _item!;
                 }
             }
 

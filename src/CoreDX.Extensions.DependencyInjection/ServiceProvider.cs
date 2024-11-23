@@ -35,9 +35,15 @@ namespace CoreDX.Extensions.DependencyInjection
 
         internal ServiceProviderEngineScope Root { get; }
 
+#if NET9_0_OR_GREATER
+        [FeatureSwitchDefinition("Microsoft.Extensions.DependencyInjection.VerifyOpenGenericServiceTrimmability")]
+#endif
         internal static bool VerifyOpenGenericServiceTrimmability { get; } =
             AppContext.TryGetSwitch("Microsoft.Extensions.DependencyInjection.VerifyOpenGenericServiceTrimmability", out bool verifyOpenGenerics) ? verifyOpenGenerics : false;
 
+#if NET9_0_OR_GREATER
+        [FeatureSwitchDefinition("Microsoft.Extensions.DependencyInjection.DisableDynamicEngine")]
+#endif
         internal static bool DisableDynamicEngine { get; } =
             AppContext.TryGetSwitch("Microsoft.Extensions.DependencyInjection.DisableDynamicEngine", out bool disableDynamicEngine) ? disableDynamicEngine : false;
 

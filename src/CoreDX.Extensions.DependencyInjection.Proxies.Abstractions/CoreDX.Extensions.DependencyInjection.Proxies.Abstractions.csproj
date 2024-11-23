@@ -3,15 +3,20 @@
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageVersion>8.0.0.2</PackageVersion>
+    <PackageVersion>9.0.0</PackageVersion>
     <PackageTags>Proxy;DependencyInjection</PackageTags>
     <Description>Add service descriptor extensions for register dynamic proxy.</Description>
     <Title>An extensions for CoreDX.Extensions.DependencyInjection.Abstractions to add dynamic proxy support for service provider that support typed implementation factory.</Title>
-    <PackageReleaseNotes>Add netstandard2.0;netstandard2.1;net462 support.</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      Update to .NET 9.0 .
+      Fix: Object equals bug of type ImplicitProxyServiceOriginalServiceKey(eg. null == null return false).
+    </PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Castle.Core.AsyncInterceptor" />
+    <PackageReference Include="System.Net.Http" />
+    <PackageReference Include="System.Text.RegularExpressions" />
   </ItemGroup>
 
   <ItemGroup>

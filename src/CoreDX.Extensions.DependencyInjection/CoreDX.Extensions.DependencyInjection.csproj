@@ -3,11 +3,11 @@
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageVersion>8.0.0.2</PackageVersion>
+    <PackageVersion>9.0.0</PackageVersion>
     <PackageTags>DependencyInjection</PackageTags>
     <Description>Add service provider that supported service type is provided as argument in parameter of factory.</Description>
     <Title>An implementation modified from Microsoft.Extensions.DependencyInjection to support typed implementation factory.</Title>
-    <PackageReleaseNotes>Add netstandard2.0;netstandard2.1;net462 support.</PackageReleaseNotes>
+    <PackageReleaseNotes>Update to .NET 9.0 .</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
@@ -40,7 +40,7 @@
     <Compile Remove="Common\ParameterDefaultValue.netcoreapp.cs" />
   </ItemGroup>
 
-    <ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\CoreDX.Extensions.DependencyInjection.Abstractions\CoreDX.Extensions.DependencyInjection.Abstractions.csproj" />
   </ItemGroup>
 
