@@ -9,7 +9,10 @@ ServiceCollection services = new ();
 services.AddScoped(typeof(IB<>, (provider, requestServiceType) =>
 {
     var closedType = typeof(B<>).MakeGenericType(requestServiceType.GenericTypeArguments);
-    return sp.GetService(closedType);
+    return Activator.CreateInstance(closedType);
+
+    // If service is another registered service type.
+    // return provider.GetService(closedType);
 });
 
 // Forward an open generic service to another open generic service.
