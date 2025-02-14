@@ -8,7 +8,7 @@ ServiceCollection services = new ();
 // Get service type from implementation factory.
 services.AddScoped(typeof(IB<>, (provider, requestServiceType) =>
 {
-    var closedType = typeof(B<>).MakeGenericType(type.GenericTypeArguments);
+    var closedType = typeof(B<>).MakeGenericType(requestServiceType.GenericTypeArguments);
     return sp.GetService(closedType);
 });
 
