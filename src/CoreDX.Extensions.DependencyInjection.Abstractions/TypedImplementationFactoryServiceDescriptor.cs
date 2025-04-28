@@ -11,25 +11,34 @@ public class TypedImplementationFactoryServiceDescriptor : ServiceDescriptor
     private readonly object? _typedImplementationFactory;
 
     /// <summary>
-    /// Gets the typed factory used for creating service instances.
+    /// Gets the typed factory used for creating service instances,
+    /// or returns <see langword="null"/> if <see cref="ServiceDescriptor.IsKeyedService"/> is <see langword="true"/>.
     /// </summary>
+    /// <remarks>
+    /// If <see cref="ServiceDescriptor.IsKeyedService"/> is <see langword="true"/>, <see cref="TypedKeyedImplementationFactory"/> should be called instead.
+    /// </remarks>
     public Func<IServiceProvider, Type, object>? TypedImplementationFactory
     {
         get
         {
             if (IsKeyedService)
             {
-                throw new InvalidOperationException("This service descriptor is keyed. Your service provider may not support keyed services.");
+                return null;
+                //throw new InvalidOperationException("This service descriptor is keyed. Your service provider may not support keyed services.");
             }
             return (Func<IServiceProvider, Type, object>?)_typedImplementationFactory;
         }
     }
 
-    private readonly object? _typedKeyedImplementationFactory;
+    //private readonly object? _typedKeyedImplementationFactory;
 
     /// <summary>
-    /// Gets the typed keyed factory used for creating service instances.
+    /// Gets the typed keyed factory used for creating service instances,
+    /// or throws <see cref="InvalidOperationException"/> if <see cref="ServiceDescriptor.IsKeyedService"/> is <see langword="false"/>.
     /// </summary>
+    /// <remarks>
+    /// If <see cref="ServiceDescriptor.IsKeyedService"/> is <see langword="false"/>, <see cref="TypedImplementationFactory"/> should be called instead.
+    /// </remarks>
     public Func<IServiceProvider, object?, Type, object>? TypedKeyedImplementationFactory
     {
         get
@@ -38,7 +47,7 @@ public class TypedImplementationFactoryServiceDescriptor : ServiceDescriptor
             {
                 throw new InvalidOperationException("This service descriptor is not keyed.");
             }
-            return (Func<IServiceProvider, object?, Type, object>?)_typedKeyedImplementationFactory;
+            return (Func<IServiceProvider, object?, Type, object>?)_typedImplementationFactory;
         }
     }
 
@@ -156,7 +165,7 @@ public class TypedImplementationFactoryServiceDescriptor : ServiceDescriptor
         : base(serviceType, serviceKey, ThrowKeyedFactory, lifetime)
     {
         CheckOpenGeneric(serviceType);
-        _typedKeyedImplementationFactory = factory ?? throw new ArgumentNullException(nameof(factory));
+        _typedImplementationFactory = factory ?? throw new ArgumentNullException(nameof(factory));
     }
 
     /// <summary>
@@ -337,6 +346,67 @@ public class TypedImplementationFactoryServiceDescriptor : ServiceDescriptor
         where TService : class
     {
         return new(typeof(TService), serviceKey, implementationType, ServiceLifetime.Transient);
+    }
+
+    internal Type GetImplementationType()
+    {
+        if (ServiceKey == null)
+        {
+            if (ImplementationType != null)
+            {
+                return ImplementationType;
+            }
+            else if (ImplementationInstance != null)
+            {
+                return ImplementationInstance.GetType();
+            }
+            else if (ImplementationFactory != null)
+            {
+                Type[]? typeArguments = ImplementationFactory.GetType().GenericTypeArguments;
+
+                Debug.Assert(typeArguments.Length == 2);
+
+                return typeArguments[1];
+            }
+            else if (TypedImplementationFactory != null)
+            {
+                Type[]? typeArguments = TypedImplementationFactory.GetType().GenericTypeArguments;
+
+                Debug.Assert(typeArguments.Length == 3);
+
+                return typeArguments[2];
+            }
+        }
+        else
+        {
+            if (KeyedImplementationType != null)
+            {
+                return KeyedImplementationType;
+            }
+            else if (KeyedImplementationInstance != null)
+            {
+                return KeyedImplementationInstance.GetType();
+            }
+            else if (KeyedImplementationFactory != null)
+            {
+                Type[]? typeArguments = KeyedImplementationFactory.GetType().GenericTypeArguments;
+
+                Debug.Assert(typeArguments.Length == 3);
+
+                return typeArguments[2];
+            }
+            else if (TypedKeyedImplementationFactory != null)
+            {
+                Type[]? typeArguments = TypedKeyedImplementationFactory.GetType().GenericTypeArguments;
+
+                Debug.Assert(typeArguments.Length == 4);
+
+                return typeArguments[3];
+            }
+        }
+
+        Debug.Fail("ImplementationType, ImplementationInstance, ImplementationFactory or KeyedImplementationFactory must be non null");
+        return null;
     }
 
     private string DebuggerToString()

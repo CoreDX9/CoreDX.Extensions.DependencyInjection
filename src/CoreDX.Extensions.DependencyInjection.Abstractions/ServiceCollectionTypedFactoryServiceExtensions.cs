@@ -1,4 +1,5 @@
 ﻿using CoreDX.Extensions.DependencyInjection.Abstractions;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -443,5 +444,109 @@ public static partial class ServiceCollectionTypedFactoryServiceExtensions
         where TImplementation : class, TService
     {
         return services.AddKeyedTypedFactoryTransient(typeof(TService), serviceKey, implementationFactory);
+    }
+
+    /// <summary>
+    /// Adds a <see cref="TypedImplementationFactoryServiceDescriptor"/> if an existing descriptor with the same
+    /// <see cref="ServiceDescriptor.ServiceType"/> and an implementation that does not already exist
+    /// in <paramref name="services"/>.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/>.</param>
+    /// <param name="descriptor">The <see cref="TypedImplementationFactoryServiceDescriptor"/>.</param>
+    /// <remarks>
+    /// Use <see cref="TryAddEnumerable(IServiceCollection, TypedImplementationFactoryServiceDescriptor)"/> when registering a service implementation of a
+    /// service type that
+    /// supports multiple registrations of the same service type. Using
+    /// <see cref="ServiceCollectionDescriptorExtensions.Add(IServiceCollection, ServiceDescriptor)"/> is not idempotent and can add
+    /// duplicate
+    /// <see cref="ServiceDescriptor"/> instances if called twice. Using
+    /// <see cref="TryAddEnumerable(IServiceCollection, TypedImplementationFactoryServiceDescriptor)"/> will prevent registration
+    /// of multiple implementation types.
+    /// </remarks>
+    public static void TryAddEnumerable(
+        this IServiceCollection services,
+        TypedImplementationFactoryServiceDescriptor descriptor)
+    {
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(descriptor);
+#else
+        if (services is null)
+        {
+            throw new ArgumentNullException(nameof(services));
+        }
+
+        if (descriptor is null)
+        {
+            throw new ArgumentNullException(nameof(descriptor));
+        }
+#endif
+
+        Type? implementationType = descriptor.GetImplementationType();
+
+        if (implementationType == typeof(object) ||
+            implementationType == descriptor.ServiceType)
+        {
+            throw new ArgumentException(
+                $"Implementation type cannot be '{implementationType.GetType()}' because it is indistinguishable from other services registered for '{descriptor.ServiceType}'.",
+                nameof(descriptor));
+        }
+
+        int count = services.Count;
+        for (int i = 0; i < count; i++)
+        {
+            TypedImplementationFactoryServiceDescriptor? service = services[i] as TypedImplementationFactoryServiceDescriptor;
+            if (service?.ServiceType == descriptor.ServiceType &&
+                service.GetImplementationType() == implementationType &&
+                object.Equals(service.ServiceKey, descriptor.ServiceKey))
+            {
+                // Already added
+                return;
+            }
+        }
+
+        services.Add(descriptor);
+    }
+
+    /// <summary>
+    /// Adds the specified <see cref="TypedImplementationFactoryServiceDescriptor"/>s if an existing descriptor with the same
+    /// <see cref="ServiceDescriptor.ServiceType"/> and an implementation that does not already exist
+    /// in <paramref name="services"/>.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/>.</param>
+    /// <param name="descriptors">The <see cref="TypedImplementationFactoryServiceDescriptor"/>s.</param>
+    /// <remarks>
+    /// Use <see cref="TryAddEnumerable(IServiceCollection, TypedImplementationFactoryServiceDescriptor)"/> when registering a service
+    /// implementation of a service type that
+    /// supports multiple registrations of the same service type. Using
+    /// <see cref="ServiceCollectionDescriptorExtensions.Add(IServiceCollection, ServiceDescriptor)"/> is not idempotent and can add
+    /// duplicate
+    /// <see cref="ServiceDescriptor"/> instances if called twice. Using
+    /// <see cref="TryAddEnumerable(IServiceCollection, TypedImplementationFactoryServiceDescriptor)"/> will prevent registration
+    /// of multiple implementation types.
+    /// </remarks>
+    public static void TryAddEnumerable(
+        this IServiceCollection services,
+        IEnumerable<TypedImplementationFactoryServiceDescriptor> descriptors)
+    {
+#if NET6_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(descriptors);
+#else
+        if (services is null)
+        {
+            throw new ArgumentNullException(nameof(services));
+        }
+
+        if (descriptors is null)
+        {
+            throw new ArgumentNullException(nameof(descriptors));
+        }
+#endif
+
+        foreach (TypedImplementationFactoryServiceDescriptor? d in descriptors)
+        {
+            services.TryAddEnumerable(d);
+        }
     }
 }
