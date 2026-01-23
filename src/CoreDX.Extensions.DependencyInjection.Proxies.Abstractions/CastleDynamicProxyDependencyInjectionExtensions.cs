@@ -395,6 +395,8 @@ public static class CastleDynamicProxyDependencyInjectionExtensions
         }
 #endif
 
+        if (serviceKey == KeyedService.AnyKey) throw new NotSupportedException("Keyed implicit proxy don't support KeyedService.AnyKey.");
+
         CheckInterface(serviceType);
         CheckInterceptor(interceptorTypes);
 
@@ -1112,9 +1114,9 @@ public static class CastleDynamicProxyDependencyInjectionExtensions
             throw new InvalidOperationException($"Proxy need interface but {nameof(serviceType)} is not interface.");
     }
 
-    private static void CheckInterceptor(params Type[] types)
+    private static void CheckInterceptor(params Type[] interceptorTypes)
     {
-        foreach (var type in types)
+        foreach (var type in interceptorTypes)
         {
 #if NET6_0_OR_GREATER
             if (!(type.IsAssignableTo(typeof(IInterceptor)) || type.IsAssignableTo(typeof(IAsyncInterceptor))))
@@ -1122,7 +1124,7 @@ public static class CastleDynamicProxyDependencyInjectionExtensions
             if (!(typeof(IInterceptor).IsAssignableFrom(type) || typeof(IAsyncInterceptor).IsAssignableFrom(type)))
 #endif
 
-                throw new ArgumentException($"Exist element in {nameof(types)} is not {nameof(IInterceptor)} or {nameof(IAsyncInterceptor)}.", $"{nameof(types)}");
+                throw new ArgumentException($"Exist element in {nameof(interceptorTypes)} is not {nameof(IInterceptor)} or {nameof(IAsyncInterceptor)}.", $"{nameof(interceptorTypes)}");
         }
     }
 

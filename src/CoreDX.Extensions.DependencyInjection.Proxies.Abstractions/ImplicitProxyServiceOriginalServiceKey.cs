@@ -1,4 +1,7 @@
-﻿using System.Numerics;
+﻿using Microsoft.Extensions.DependencyInjection;
+#if NET7_0_OR_GREATER
+using System.Numerics;
+#endif
 
 namespace CoreDX.Extensions.DependencyInjection.Proxies;
 
@@ -52,11 +55,24 @@ public sealed class ImplicitProxyServiceOriginalServiceKey
         if (_isStringMode && obj is string str) return $"{DefaultStringPrefix}{_originalServiceKey}" == str;
         else
         {
-            var isEquals = obj is not null and ImplicitProxyServiceOriginalServiceKey other
-                && ((_originalServiceKey is null && other._originalServiceKey is null)
-                    || (_originalServiceKey?.Equals(other._originalServiceKey) ?? other._originalServiceKey!.Equals(_originalServiceKey)) is true);
+            var other = obj as ImplicitProxyServiceOriginalServiceKey;
 
-            return isEquals;
+            if (other?._originalServiceKey == KeyedService.AnyKey)
+            {
+                return _originalServiceKey is not null;
+            }
+            else if (_originalServiceKey == KeyedService.AnyKey)
+            {
+                return other?._originalServiceKey is not null;
+            }
+            else
+            {
+                var isEquals = obj is not null && other is not null
+                    && ((_originalServiceKey is null && other._originalServiceKey is null)
+                        || (_originalServiceKey?.Equals(other._originalServiceKey) ?? other._originalServiceKey!.Equals(_originalServiceKey)) is true);
+
+                return isEquals;
+            }
         }
     }
 

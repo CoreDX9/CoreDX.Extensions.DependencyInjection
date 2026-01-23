@@ -152,10 +152,17 @@ namespace Microsoft.Extensions.DependencyInjection.Specification
             _ = provider.GetKeyedService<IService>("something-else");
             _ = provider.GetKeyedService<IService>("something-else-again");
 
-            // Return all services registered with a non null key, but not the one "created" with KeyedService.AnyKey
+            // Return all services registered with a non null key, but not the one "created" with KeyedService.AnyKey,
+            // nor the KeyedService.AnyKey registration
             var allServices = provider.GetKeyedServices<IService>(KeyedService.AnyKey).ToList();
-            Assert.Equal(5, allServices.Count);
-            Assert.Equal(new[] { service1, service2, service3, service4 }, allServices.Skip(1));
+            Assert.Equal(4, allServices.Count);
+            Assert.Equal(new[] { service1, service2, service3, service4 }, allServices);
+
+            var someKeyedServices = provider.GetKeyedServices<IService>("service").ToList();
+            Assert.Equal(new[] { service2, service3, service4 }, someKeyedServices);
+
+            var unkeyedServices = provider.GetServices<IService>().ToList();
+            Assert.Equal(new[] { service5, service6 }, unkeyedServices);
         }
 
         [Fact]
@@ -243,7 +250,7 @@ namespace Microsoft.Extensions.DependencyInjection.Specification
             var provider = CreateServiceProvider(serviceCollection);
 
             var services = provider.GetKeyedServices<IFakeOpenGenericService<PocoClass>>("some-key").ToList();
-            Assert.Equal(new[] { service1, service2 }, services);
+            Assert.Equal(new[] { service2 }, services);
         }
 
         [Fact]

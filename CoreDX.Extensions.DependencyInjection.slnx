@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/solution-items/">
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="LICENSE.txt" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/CoreDX.Extensions.DependencyInjection.Abstractions/CoreDX.Extensions.DependencyInjection.Abstractions.csproj" />
+    <Project Path="src/CoreDX.Extensions.DependencyInjection.Hosting.Abstractions/CoreDX.Extensions.DependencyInjection.Hosting.Abstractions.csproj" />
+    <Project Path="src/CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions/CoreDX.Extensions.DependencyInjection.Hosting.Proxies.Abstractions.csproj" />
+    <Project Path="src/CoreDX.Extensions.DependencyInjection.Proxies.Abstractions/CoreDX.Extensions.DependencyInjection.Proxies.Abstractions.csproj" />
+    <Project Path="src/CoreDX.Extensions.DependencyInjection/CoreDX.Extensions.DependencyInjection.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CollectibleAssembly/CollectibleAssembly.csproj" />
+    <Project Path="tests/DI.Tests/Microsoft.Extensions.DependencyInjection.Tests.csproj" />
+    <Project Path="tests/Specification.Tests/src/Microsoft.Extensions.DependencyInjection.Specification.Tests.csproj" />
+    <Project Path="tests/TestUtilities/TestUtilities.csproj" />
+  </Folder>
+</Solution>

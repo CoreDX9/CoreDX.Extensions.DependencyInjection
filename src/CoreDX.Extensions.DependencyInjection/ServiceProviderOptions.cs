@@ -1,6 +1,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace CoreDX.Extensions.DependencyInjection
@@ -14,14 +15,16 @@ namespace CoreDX.Extensions.DependencyInjection
         internal static readonly ServiceProviderOptions Default = new ServiceProviderOptions();
 
         /// <summary>
-        /// <c>true</c> to perform check verifying that scoped services never gets resolved from root provider; otherwise <c>false</c>. Defaults to <c>false</c>.
+        /// Gets or sets a value that indicates whether validation is performed to ensure that scoped services are never resolved from the root provider.
         /// </summary>
         public bool ValidateScopes { get; set; }
 
         /// <summary>
-        /// <c>true</c> to perform check verifying that all services can be created during <c>BuildServiceProvider</c> call; otherwise <c>false</c>. Defaults to <c>false</c>.
-        /// NOTE: this check doesn't verify open generics services.
+        /// Gets or sets a value that indicates whether validation is performed to ensure all services can be created when <see cref="ServiceCollectionContainerBuilderExtensions.BuildServiceProvider(IServiceCollection, ServiceProviderOptions)" /> is called.
         /// </summary>
+        /// <remarks>
+        /// Open generics services aren't validated.
+        /// </remarks>
         public bool ValidateOnBuild { get; set; }
     }
 }

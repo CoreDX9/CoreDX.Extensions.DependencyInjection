@@ -58,6 +58,10 @@ namespace System
         internal static string @AotCannotCreateGenericValueType => GetResourceString("AotCannotCreateGenericValueType", @"Unable to create a generic service for type '{0}' because '{1}' is a ValueType. Native code to support creating generic services might not be available with native AOT.");
         /// <summary>No service for type '{0}' has been registered.</summary>
         internal static string @NoServiceRegistered => GetResourceString("NoServiceRegistered", @"No service for type '{0}' has been registered.");
+        /// <summary>No keyed service for type '{0}' using key type '{1}' has been registered.</summary>
+        internal static string @NoKeyedServiceRegistered => GetResourceString("NoKeyedServiceRegistered", @"No keyed service for type '{0}' using key type '{1}' has been registered.");
+        /// <summary>KeyedService.AnyKey cannot be used to resolve a single service.</summary>
+        internal static string @KeyedServiceAnyKeyUsedToResolveService => GetResourceString("KeyedServiceAnyKeyUsedToResolveService", @"KeyedService.AnyKey cannot be used to resolve a single service.");
         /// <summary>The type of the key used for lookup doesn't match the type in the constructor parameter with the ServiceKey attribute.</summary>
         internal static string @InvalidServiceKeyType => GetResourceString("InvalidServiceKeyType", @"The type of the key used for lookup doesn't match the type in the constructor parameter with the ServiceKey attribute.");
 

@@ -406,7 +406,7 @@ public class TypedImplementationFactoryServiceDescriptor : ServiceDescriptor
         }
 
         Debug.Fail("ImplementationType, ImplementationInstance, ImplementationFactory or KeyedImplementationFactory must be non null");
-        return null;
+        return null!;
     }
 
     private string DebuggerToString()
