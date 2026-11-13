@@ -33,13 +33,13 @@ namespace CoreDX.Extensions.DependencyInjection
         }
 
         /// <inheritdoc />
-        public IServiceCollection CreateBuilder(IServiceCollection services)
+        public virtual IServiceCollection CreateBuilder(IServiceCollection services)
         {
             return services;
         }
 
         /// <inheritdoc />
-        public IServiceProvider CreateServiceProvider(IServiceCollection containerBuilder)
+        public virtual IServiceProvider CreateServiceProvider(IServiceCollection containerBuilder)
         {
             return containerBuilder.BuildServiceProvider(_options);
         }
