@@ -1,7 +1,7 @@
-﻿main
-a44f532a0422616d6f5718ffd62eded9fe889a3d
+main
+fa693c42fb67e4359d02513c2c4bb69172a283f0
 
-提交时间：2025-8-5
+提交时间：2026-10-5 22:44 GMT+8
 
 修改的文件（主动修改，被动修改如因修改类名而被自动重构的不计）：
 DefaultServiceProviderFactory.cs
@@ -18,4 +18,4 @@ ServiceLookup/CallSiteFactory.TypedServiceImplementationFactory.cs
 原始代码库是运行时仓库的一部分，运行时仓库过于庞大，通过Fork管理更麻烦，因故复制并手工管理代码同步。
 提交ID是和Microsoft.Extensions.DependencyInjection有关的最后一次提交，无关提交忽略不计。
 
-当前代码对应的.NET版本：10.0
+当前代码对应的.NET版本：11.0

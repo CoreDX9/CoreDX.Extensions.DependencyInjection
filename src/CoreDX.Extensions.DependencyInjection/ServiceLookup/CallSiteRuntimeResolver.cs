@@ -1,6 +1,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using Microsoft.Extensions.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,6 +15,11 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
     internal sealed class CallSiteRuntimeResolver : CallSiteVisitor<RuntimeResolverContext, object?>
     {
         public static CallSiteRuntimeResolver Instance { get; } = new();
+
+        // ThreadStatic set to track call sites currently being resolved on this thread.
+        // Used to detect circular dependencies that occur through factory functions.
+        [ThreadStatic]
+        private static HashSet<ServiceCallSite>? t_resolving;
 
         private CallSiteRuntimeResolver()
         {
@@ -89,14 +95,30 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
                     return callSiteValue;
                 }
 
-                object? resolved = VisitCallSiteMain(callSite, new RuntimeResolverContext
+                // Detect circular dependencies by tracking what we're currently resolving on this thread
+                t_resolving ??= new HashSet<ServiceCallSite>(ReferenceEqualityComparer.Instance);
+                if (!t_resolving.Add(callSite))
                 {
-                    Scope = serviceProviderEngine,
-                    AcquiredLocks = context.AcquiredLocks | lockType
-                });
-                serviceProviderEngine.CaptureDisposable(resolved);
-                callSite.Value = resolved;
-                return resolved;
+                    // We're already resolving this call site on this thread - circular dependency detected
+                    throw new InvalidOperationException(
+                        SR.Format(SR.CircularDependencyException, TypeNameHelper.GetTypeDisplayName(callSite.ServiceType)));
+                }
+
+                try
+                {
+                    object? resolved = VisitCallSiteMain(callSite, new RuntimeResolverContext
+                    {
+                        Scope = serviceProviderEngine,
+                        AcquiredLocks = context.AcquiredLocks | lockType
+                    });
+                    serviceProviderEngine.CaptureDisposable(resolved);
+                    callSite.Value = resolved;
+                    return resolved;
+                }
+                finally
+                {
+                    t_resolving.Remove(callSite);
+                }
             }
         }
 
@@ -174,10 +196,10 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
             return array;
 
             [UnconditionalSuppressMessage("AotAnalysis", "IL3050:RequiresDynamicCode",
-                Justification = "VerifyAotCompatibility ensures elementType is not a ValueType")]
+                Justification = "The element type is guaranteed not to be a ValueType when dynamic code isn't supported")]
             static Array CreateArray(Type elementType, int length)
             {
-                Debug.Assert(!TypedImplementationFactoryServiceProvider.VerifyAotCompatibility || !elementType.IsValueType, "VerifyAotCompatibility=true will throw during building the IEnumerableCallSite if elementType is a ValueType.");
+                Debug.Assert(TypedImplementationFactoryServiceProvider.IsDynamicCodeSupported || !elementType.IsValueType, "When dynamic code isn't supported, building the IEnumerableCallSite will throw if elementType is a ValueType.");
 
                 return Array.CreateInstance(elementType, length);
             }

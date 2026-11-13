@@ -1,15 +1,15 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using CoreDX.Extensions.DependencyInjection.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Internal;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using CoreDX.Extensions.DependencyInjection.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Internal;
 
 namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
 {
@@ -40,11 +40,11 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
             {
                 Type serviceType = descriptor.ServiceType;
 
-                #region ÑéÖ¤¿ÉÊ¶±ðÇëÇóÀàÐÍµÄ·þÎñÊµÏÖ¹¤³§
+                #region éªŒè¯å¯è¯†åˆ«è¯·æ±‚ç±»åž‹çš„æœåŠ¡å®žçŽ°å·¥åŽ‚
 
                 if (descriptor is TypedImplementationFactoryServiceDescriptor typedFactoryDescriptor)
                 {
-                    if(typedFactoryDescriptor.IsKeyedService && typedFactoryDescriptor.TypedKeyedImplementationFactory == null)
+                    if (typedFactoryDescriptor.IsKeyedService && typedFactoryDescriptor.TypedKeyedImplementationFactory == null)
                     {
                         throw new ArgumentException(
                             $"Keyed open generic service {serviceType} requires {nameof(typedFactoryDescriptor.TypedKeyedImplementationFactory)}",
@@ -253,7 +253,7 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
         {
             if (serviceIdentifier.ServiceType.IsConstructedGenericType)
             {
-                var genericIdentifier = serviceIdentifier.GetGenericTypeDefinition();
+                ServiceIdentifier genericIdentifier = serviceIdentifier.GetGenericTypeDefinition();
                 if (_descriptorLookup.TryGetValue(genericIdentifier, out ServiceDescriptorCacheItem descriptor))
                 {
                     return TryCreateOpenGeneric(descriptor.Last, serviceIdentifier, callSiteChain, DefaultSlot, true);
@@ -295,7 +295,7 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
 
                 Type itemType = serviceType.GenericTypeArguments[0];
                 var cacheKey = new ServiceIdentifier(serviceIdentifier.ServiceKey, itemType);
-                if (TypedImplementationFactoryServiceProvider.VerifyAotCompatibility && itemType.IsValueType)
+                if (!TypedImplementationFactoryServiceProvider.IsDynamicCodeSupported && itemType.IsValueType)
                 {
                     // NativeAOT apps are not able to make Enumerable of ValueType services
                     // since there is no guarantee the ValueType[] code has been generated.
@@ -367,9 +367,19 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
                                 // For AnyKey, we want to cache based on descriptor identity, not AnyKey that cacheKey has.
                                 ServiceIdentifier registrationKey = isAnyKeyLookup ? ServiceIdentifier.FromDescriptor(_descriptors[i]) : cacheKey;
                                 slot = GetSlot(registrationKey);
-                                if (CreateOpenGeneric(_descriptors[i], registrationKey, callSiteChain, slot, throwOnConstraintViolation: false) is { } callSite)
+
+                                // We skip open generics with incompatible constraints.
+                                if (CreateOpenGeneric(_descriptors[i], registrationKey, callSiteChain, slot, false) is { } callSite)
                                 {
                                     AddCallSite(callSite, i);
+                                    UpdateSlot(registrationKey);
+                                }
+                                else if (slot == 0)
+                                {
+                                    // If the last registration has incompatible constraints, we still need to update the slot.
+                                    // This ensures that single service resolution (GetService) will attempt to resolve using the last
+                                    // registration and throw an ArgumentException, maintaining "last wins" semantics. During enumerable
+                                    // resolution (GetServices), the incompatible registration is simply skipped.
                                     UpdateSlot(registrationKey);
                                 }
                             }
@@ -514,7 +524,7 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
                 callSite = CreateConstructorCallSite(lifetime, serviceIdentifier, descriptor.GetImplementationType()!, callSiteChain);
             }
 
-            #region Îª¿ÉÊ¶±ðÇëÇóÀàÐÍµÄ·þÎñ¹¤³§×¢²á·þÎñÊµÏÖ¹¤³§
+            #region ä¸ºå¯è¯†åˆ«è¯·æ±‚ç±»åž‹çš„æœåŠ¡å·¥åŽ‚æ³¨å†ŒæœåŠ¡å®žçŽ°å·¥åŽ‚
 
             else if (TryCreateTypedFactoryCallSite(lifetime, descriptor as TypedImplementationFactoryServiceDescriptor, descriptor.ServiceType) is ServiceCallSite factoryCallSite)
             {
@@ -551,7 +561,7 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
             "Trimming annotations on the generic types are verified when 'Microsoft.Extensions.DependencyInjection.VerifyOpenGenericServiceTrimmability' is set, which is set by default when PublishTrimmed=true. " +
             "That check informs developers when these generic types don't have compatible trimming annotations.")]
         [UnconditionalSuppressMessage("AotAnalysis", "IL3050:RequiresDynamicCode",
-            Justification = "When ServiceProvider.VerifyAotCompatibility is true, which it is by default when PublishAot=true, " +
+            Justification = "When dynamic code isn't supported (ServiceProvider.IsDynamicCodeSupported is false), which is the case by default when PublishAot=true, " +
             "this method ensures the generic types being created aren't using ValueTypes.")]
         private ServiceCallSite? CreateOpenGeneric(ServiceDescriptor descriptor, ServiceIdentifier serviceIdentifier, CallSiteChain callSiteChain, int slot, bool throwOnConstraintViolation)
         {
@@ -562,18 +572,18 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
             }
 
             Type? implementationType = descriptor.GetImplementationType();
-            //Debug.Assert(implementationType != null, "descriptor.ImplementationType != null"); // ÑÓ³Ù¶ÏÑÔ£¬´Ë´¦¿ÉÄÜÊÇ¿ª·Å·ºÐÍ¹¤³§
+            //Debug.Assert(implementationType != null, "descriptor.ImplementationType != null"); // å»¶è¿Ÿæ–­è¨€ï¼Œæ­¤å¤„å¯èƒ½æ˜¯å¼€æ”¾æ³›åž‹å·¥åŽ‚
             var lifetime = new ResultCache(descriptor.Lifetime, serviceIdentifier, slot);
             Type closedType;
             try
             {
                 Type[] genericTypeArguments = serviceIdentifier.ServiceType.GenericTypeArguments;
-                if (TypedImplementationFactoryServiceProvider.VerifyAotCompatibility)
+                if (!TypedImplementationFactoryServiceProvider.IsDynamicCodeSupported)
                 {
                     VerifyOpenGenericAotCompatibility(serviceIdentifier.ServiceType, genericTypeArguments);
                 }
 
-                #region Îª¿ª·ÅÊ½·ºÐÍ·þÎñÌí¼Ó¿ÉÊ¶±ðÇëÇóÀàÐÍµÄ·þÎñÊµÏÖ¹¤³§
+                #region ä¸ºå¼€æ”¾å¼æ³›åž‹æœåŠ¡æ·»åŠ å¯è¯†åˆ«è¯·æ±‚ç±»åž‹çš„æœåŠ¡å®žçŽ°å·¥åŽ‚
 
                 if (descriptor is TypedImplementationFactoryServiceDescriptor typedFactoryDescriptor)
                 {
@@ -588,7 +598,7 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
                     }
                 }
 
-                // ¶ÏÑÔÒÆ¶¯µ½´Ë´¦
+                // æ–­è¨€ç§»åŠ¨åˆ°æ­¤å¤„
                 Debug.Assert(implementationType != null, "descriptor.ImplementationType != null");
 
                 #endregion
@@ -646,69 +656,108 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
                     return new ConstructorCallSite(lifetime, serviceIdentifier.ServiceType, constructor, parameterCallSites, serviceIdentifier.ServiceKey);
                 }
 
-                Array.Sort(constructors,
-                    static (a, b) => b.GetParameters().Length.CompareTo(a.GetParameters().Length));
+                // With more than one constructor, select the "best" one: the constructor with the
+                // most parameters whose arguments can all be resolved, either from the container or
+                // by falling back to a default parameter value. Constructors are ordered from the
+                // most parameters to the fewest (preserving declaration order among equal counts),
+                // and the first fully resolvable one becomes the best match. Every subsequent
+                // resolvable constructor must have parameters that are a subset of the best one,
+                // i.e. each of its parameters was already used by the best constructor; otherwise
+                // the two are ambiguous and an exception is thrown.
+                int constructorCount = constructors.Length;
+                var sortedParameters = new ParameterInfo[constructorCount][];
+                for (int i = 0; i < constructorCount; i++)
+                {
+                    ConstructorInfo constructor = constructors[i];
+                    ParameterInfo[] parameters = constructor.GetParameters();
+
+                    int sortedIndex = i;
+                    while (sortedIndex > 0 && sortedParameters[sortedIndex - 1].Length < parameters.Length)
+                    {
+                        constructors[sortedIndex] = constructors[sortedIndex - 1];
+                        sortedParameters[sortedIndex] = sortedParameters[sortedIndex - 1];
+                        sortedIndex--;
+                    }
+
+                    constructors[sortedIndex] = constructor;
+                    sortedParameters[sortedIndex] = parameters;
+                }
 
                 ConstructorInfo? bestConstructor = null;
-                HashSet<Type>? bestConstructorParameterTypes = null;
-                for (int i = 0; i < constructors.Length; i++)
-                {
-                    ParameterInfo[] parameters = constructors[i].GetParameters();
+                List<ServiceIdentifier>? bestResolvedParameters = null;
+                List<ServiceIdentifier>? resolvedParameters = null;
 
-                    ServiceCallSite[]? currentParameterCallSites = CreateArgumentCallSites(
+                for (int i = 0; i < constructorCount; i++)
+                {
+                    ConstructorInfo constructor = constructors[i];
+                    ParameterInfo[] parameters = sortedParameters[i];
+
+                    if (bestConstructor is null)
+                    {
+                        var currentResolvedParameters = new List<ServiceIdentifier>(parameters.Length);
+                        ServiceCallSite[]? currentParameterCallSites = CreateArgumentCallSites(
+                            serviceIdentifier,
+                            implementationType,
+                            callSiteChain,
+                            parameters,
+                            throwIfCallSiteNotFound: false,
+                            currentResolvedParameters);
+
+                        if (currentParameterCallSites is null)
+                        {
+                            continue;
+                        }
+
+                        bestConstructor = constructor;
+                        parameterCallSites = currentParameterCallSites;
+                        bestResolvedParameters = currentResolvedParameters;
+                        continue;
+                    }
+
+                    Debug.Assert(bestResolvedParameters is not null);
+
+                    if (resolvedParameters is null)
+                    {
+                        resolvedParameters = new List<ServiceIdentifier>(parameters.Length);
+                    }
+                    else
+                    {
+                        resolvedParameters.Clear();
+                    }
+
+                    if (CreateArgumentCallSites(
                         serviceIdentifier,
                         implementationType,
                         callSiteChain,
                         parameters,
-                        throwIfCallSiteNotFound: false);
-
-                    if (currentParameterCallSites != null)
+                        throwIfCallSiteNotFound: false,
+                        resolvedParameters) is null)
                     {
-                        if (bestConstructor == null)
-                        {
-                            bestConstructor = constructors[i];
-                            parameterCallSites = currentParameterCallSites;
-                        }
-                        else
-                        {
-                            // Since we're visiting constructors in decreasing order of number of parameters,
-                            // we'll only see ambiguities or supersets once we've seen a 'bestConstructor'.
+                        continue;
+                    }
 
-                            if (bestConstructorParameterTypes == null)
-                            {
-                                bestConstructorParameterTypes = new HashSet<Type>();
-                                foreach (ParameterInfo p in bestConstructor.GetParameters())
-                                {
-                                    bestConstructorParameterTypes.Add(p.ParameterType);
-                                }
-                            }
-
-                            foreach (ParameterInfo p in parameters)
-                            {
-                                if (!bestConstructorParameterTypes.Contains(p.ParameterType))
-                                {
-                                    // Ambiguous match exception
-                                    throw new InvalidOperationException(string.Join(
-                                        Environment.NewLine,
-                                        SR.Format(SR.AmbiguousConstructorException, implementationType),
-                                        bestConstructor,
-                                        constructors[i]));
-                                }
-                            }
+                    // All parameters resolvable; ambiguous unless it is a subset of best.
+                    foreach (ServiceIdentifier id in resolvedParameters)
+                    {
+                        if (!bestResolvedParameters!.Contains(id))
+                        {
+                            throw new InvalidOperationException(string.Join(
+                                Environment.NewLine,
+                                SR.Format(SR.AmbiguousConstructorException, implementationType),
+                                bestConstructor,
+                                constructor));
                         }
                     }
                 }
 
-                if (bestConstructor == null)
+                if (bestConstructor is null)
                 {
                     throw new InvalidOperationException(
                         SR.Format(SR.UnableToActivateTypeException, implementationType));
                 }
-                else
-                {
-                    Debug.Assert(parameterCallSites != null);
-                    return new ConstructorCallSite(lifetime, serviceIdentifier.ServiceType, bestConstructor, parameterCallSites!, serviceIdentifier.ServiceKey);
-                }
+
+                Debug.Assert(parameterCallSites != null);
+                return new ConstructorCallSite(lifetime, serviceIdentifier.ServiceType, bestConstructor, parameterCallSites!, serviceIdentifier.ServiceKey);
             }
             finally
             {
@@ -722,86 +771,104 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
             Type implementationType,
             CallSiteChain callSiteChain,
             ParameterInfo[] parameters,
-            bool throwIfCallSiteNotFound)
+            bool throwIfCallSiteNotFound,
+            List<ServiceIdentifier>? resolvedParameters = null)
         {
             var parameterCallSites = new ServiceCallSite[parameters.Length];
 
             for (int index = 0; index < parameters.Length; index++)
             {
-                ServiceCallSite? callSite = null;
-                bool isKeyedParameter = false;
-                Type parameterType = parameters[index].ParameterType;
-                foreach (var attribute in parameters[index].GetCustomAttributes(true))
+                if (!TryResolveCallSite(
+                    serviceIdentifier,
+                    implementationType,
+                    callSiteChain,
+                    parameters[index],
+                    throwIfCallSiteNotFound,
+                    out ServiceIdentifier parameterServiceIdentifier,
+                    out ServiceCallSite? callSite))
                 {
-                    if (serviceIdentifier.ServiceKey != null && attribute is ServiceKeyAttribute)
-                    {
-                        // Even though the parameter may be strongly typed, support 'object' if AnyKey is used.
-                        if (serviceIdentifier.ServiceKey == KeyedService.AnyKey)
-                        {
-                            parameterType = typeof(object);
-                        }
-                        else if (parameterType != serviceIdentifier.ServiceKey.GetType()
-                            && parameterType != typeof(object))
-                        {
-                            throw new InvalidOperationException(SR.InvalidServiceKeyType);
-                        }
-
-                        callSite = new ConstantCallSite(parameterType, serviceIdentifier.ServiceKey);
-                        break;
-                    }
-
-                    if (attribute is FromKeyedServicesAttribute fromKeyedServicesAttribute)
-                    {
-                        object? serviceKey = fromKeyedServicesAttribute.LookupMode switch
-                        {
-                            ServiceKeyLookupMode.InheritKey => serviceIdentifier.ServiceKey,
-                            ServiceKeyLookupMode.ExplicitKey => fromKeyedServicesAttribute.Key,
-                            ServiceKeyLookupMode.NullKey => null,
-                            _ => null
-                        };
-
-                        if (serviceKey is not null)
-                        {
-                            callSite = GetCallSite(new ServiceIdentifier(serviceKey, parameterType), callSiteChain);
-                            isKeyedParameter = true;
-                            break;
-                        }
-                    }
-                    if (attribute is FromKeyedServicesAttribute keyed)
-                    {
-                        var parameterSvcId = new ServiceIdentifier(keyed.Key, parameterType);
-                        callSite = GetCallSite(parameterSvcId, callSiteChain);
-                        isKeyedParameter = true;
-                        break;
-                    }
-                }
-
-                if (!isKeyedParameter)
-                {
-                    callSite ??= GetCallSite(ServiceIdentifier.FromServiceType(parameterType), callSiteChain);
-                }
-
-                if (callSite == null && ParameterDefaultValue.TryGetDefaultValue(parameters[index], out object? defaultValue))
-                {
-                    callSite = new ConstantCallSite(parameterType, defaultValue);
-                }
-
-                if (callSite == null)
-                {
-                    if (throwIfCallSiteNotFound)
-                    {
-                        throw new InvalidOperationException(SR.Format(SR.CannotResolveService,
-                            parameterType,
-                            implementationType));
-                    }
-
                     return null;
                 }
 
-                parameterCallSites[index] = callSite;
+                Debug.Assert(callSite is not null);
+                resolvedParameters?.Add(parameterServiceIdentifier);
+                parameterCallSites[index] = callSite!;
             }
 
             return parameterCallSites;
+        }
+
+        private bool TryResolveCallSite(
+            ServiceIdentifier serviceIdentifier,
+            Type implementationType,
+            CallSiteChain callSiteChain,
+            ParameterInfo parameter,
+            bool throwIfCallSiteNotFound,
+            out ServiceIdentifier parameterServiceIdentifier,
+            out ServiceCallSite? callSite)
+        {
+            Type parameterType = parameter.ParameterType;
+            parameterServiceIdentifier = ServiceIdentifier.FromServiceType(parameterType);
+
+            foreach (object attribute in parameter.GetCustomAttributes(true))
+            {
+                if (serviceIdentifier.ServiceKey != null && attribute is ServiceKeyAttribute)
+                {
+                    // Even though the parameter may be strongly typed, support 'object' if AnyKey is used.
+                    if (serviceIdentifier.ServiceKey == KeyedService.AnyKey)
+                    {
+                        parameterType = typeof(object);
+                    }
+                    else if (parameterType != serviceIdentifier.ServiceKey.GetType() &&
+                        parameterType != typeof(object))
+                    {
+                        throw new InvalidOperationException(SR.InvalidServiceKeyType);
+                    }
+
+                    parameterServiceIdentifier = new ServiceIdentifier(serviceIdentifier.ServiceKey, parameterType);
+                    callSite = new ConstantCallSite(parameterType, serviceIdentifier.ServiceKey);
+                    return true;
+                }
+
+                if (attribute is FromKeyedServicesAttribute fromKeyedServicesAttribute)
+                {
+                    object? serviceKey = fromKeyedServicesAttribute.LookupMode switch
+                    {
+                        ServiceKeyLookupMode.InheritKey => serviceIdentifier.ServiceKey,
+                        ServiceKeyLookupMode.ExplicitKey => fromKeyedServicesAttribute.Key,
+                        ServiceKeyLookupMode.NullKey => null,
+                        _ => null
+                    };
+
+                    if (serviceKey is not null)
+                    {
+                        parameterServiceIdentifier = new ServiceIdentifier(serviceKey, parameterType);
+                    }
+                }
+            }
+
+            ServiceCallSite? parameterCallSite = GetCallSite(parameterServiceIdentifier, callSiteChain);
+            if (parameterCallSite is not null)
+            {
+                callSite = parameterCallSite;
+                return true;
+            }
+
+            if (ParameterDefaultValue.TryGetDefaultValue(parameter, out object? defaultValue))
+            {
+                callSite = new ConstantCallSite(parameterType, defaultValue);
+                return true;
+            }
+
+            if (throwIfCallSiteNotFound)
+            {
+                throw new InvalidOperationException(SR.Format(SR.CannotResolveService,
+                    parameterType,
+                    implementationType));
+            }
+
+            callSite = null;
+            return false;
         }
 
         /// <summary>
@@ -866,10 +933,11 @@ namespace CoreDX.Extensions.DependencyInjection.ServiceLookup
 
             // These are the built in service types that aren't part of the list of service descriptors
             // If you update these make sure to also update the code in ServiceProvider.ctor
-            return serviceType == typeof(IServiceProvider) ||
-                   serviceType == typeof(IServiceScopeFactory) ||
-                   serviceType == typeof(IServiceProviderIsService) ||
-                   serviceType == typeof(IServiceProviderIsKeyedService);
+            return serviceIdentifier.ServiceKey is null &&
+                   (serviceType == typeof(IServiceProvider) ||
+                    serviceType == typeof(IServiceScopeFactory) ||
+                    serviceType == typeof(IServiceProviderIsService) ||
+                    serviceType == typeof(IServiceProviderIsKeyedService));
         }
 
         private struct ServiceDescriptorCacheItem

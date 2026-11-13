@@ -3,11 +3,11 @@
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageVersion>10.0.0</PackageVersion>
+    <PackageVersion>11.0.0</PackageVersion>
     <PackageTags>DependencyInjection</PackageTags>
     <Description>Add service descriptor that service type is provided as argument in parameter of factory.</Description>
     <Title>An extensions for Microsoft.Extensions.DependencyInjection.Abstractions to add typed implementation factory service descriptor.</Title>
-    <PackageReleaseNotes>Update to .NET 10.0 .</PackageReleaseNotes>
+    <PackageReleaseNotes>Update to .NET 11.0 .</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'net462' ">

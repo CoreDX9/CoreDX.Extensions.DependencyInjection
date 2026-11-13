@@ -1,0 +1,17 @@
+# C#文件
+[*.cs]
+charset = utf-8
+
+# C++相关文件
+[*.cpp]
+charset = utf-8
+[*.h]
+charset = utf-8
+[*.hpp]
+charset = utf-8
+
+# 可扩展到其他文本类型
+[*.txt]
+charset = utf-8
+[*.md]
+charset = utf-8

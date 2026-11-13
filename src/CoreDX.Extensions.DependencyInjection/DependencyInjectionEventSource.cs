@@ -1,6 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using CoreDX.Extensions.DependencyInjection.ServiceLookup;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,8 +10,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Tracing;
 using System.Linq.Expressions;
 using System.Text;
-using CoreDX.Extensions.DependencyInjection.ServiceLookup;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CoreDX.Extensions.DependencyInjection
 {
@@ -286,7 +286,7 @@ namespace CoreDX.Extensions.DependencyInjection
                 object? instance = descriptor.GetImplementationInstance();
                 Debug.Assert(instance != null, "descriptor.ImplementationInstance != null");
                 builder.Append("\"implementationInstance\": \"");
-                builder.Append(instance!.GetType());
+                builder.Append(instance.GetType());
                 builder.Append(" (instance)");
             }
             else

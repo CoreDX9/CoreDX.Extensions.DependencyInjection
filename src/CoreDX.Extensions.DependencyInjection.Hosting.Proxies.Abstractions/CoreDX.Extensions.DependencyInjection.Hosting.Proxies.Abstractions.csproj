@@ -3,11 +3,11 @@
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageVersion>10.0.0</PackageVersion>
+    <PackageVersion>11.0.0</PackageVersion>
     <PackageTags>Hosting;Proxy;DependencyInjection</PackageTags>
     <Description>Add generic host extensions for CoreDX.Extensions.DependencyInjection.Hosting.Proxies.ProxyTypedImplementationFactoryServiceProviderFactory.</Description>
     <Title>An extensions for Microsoft.Extensions.Hosting.Abstractions to add dynamic proxy support for service provider that support typed implementation factory.</Title>
-    <PackageReleaseNotes>Update to .NET 10.0 .</PackageReleaseNotes>
+    <PackageReleaseNotes>Update to .NET 11.0 .</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
